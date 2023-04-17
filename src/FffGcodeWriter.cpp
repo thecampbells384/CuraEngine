@@ -9,6 +9,7 @@
 
 #include <boost/uuid/random_generator.hpp> //For generating a UUID.
 #include <boost/uuid/uuid_io.hpp> //For generating a UUID.
+#include <scripta/logger.h>
 #include <spdlog/spdlog.h>
 #include <range/v3/view/zip.hpp>
 
@@ -30,6 +31,7 @@
 #include "utils/linearAlg2D.h"
 #include "utils/math.h"
 #include "utils/orderOptimizer.h"
+#include "utils/section_type.h"
 
 namespace cura
 {
@@ -911,6 +913,7 @@ LayerPlan& FffGcodeWriter::processLayer(const SliceDataStorage& storage, LayerIn
 
     const coord_t first_outer_wall_line_width = scene.extruders[extruder_order.front()].settings.get<coord_t>("wall_line_width_0");
     LayerPlan& gcode_layer = *new LayerPlan(storage, layer_nr, z, layer_thickness, extruder_order.front(), fan_speed_layer_time_settings_per_extruder, comb_offset_from_outlines, first_outer_wall_line_width, avoid_distance);
+    scripta::log("gcode_layer", gcode_layer, SectionType::GCODE, layer_nr);
 
     if (include_helper_parts)
     {

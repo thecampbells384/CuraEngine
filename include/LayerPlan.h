@@ -50,10 +50,11 @@ class ExtruderPlan
     FRIEND_TEST(ExtruderPlanPathsParameterizedTest, BackPressureCompensationHalf);
     FRIEND_TEST(ExtruderPlanTest, BackPressureCompensationEmptyPlan);
 #endif
-protected:
+public:
     std::vector<GCodePath> paths; //!< The paths planned for this extruder
     std::list<NozzleTempInsert> inserts; //!< The nozzle temperature command inserts, to be inserted in between segments
 
+protected:
     double heated_pre_travel_time; //!< The time at the start of this ExtruderPlan during which the head travels and has a temperature of initial_print_temperature
 
     /*!
@@ -217,6 +218,7 @@ public:
     coord_t z;
     coord_t final_travel_z;
     bool mode_skip_agressive_merge; //!< Whether to give every new path the 'skip_agressive_merge_hint' property (see GCodePath); default is false.
+    std::vector<ExtruderPlan> extruder_plans; //!< should always contain at least one ExtruderPlan
 
 private:
 
@@ -237,8 +239,6 @@ private:
      * for each extruder train.
      */
     bool skirt_brim_is_processed[MAX_EXTRUDERS];
-
-    std::vector<ExtruderPlan> extruder_plans; //!< should always contain at least one ExtruderPlan
 
     size_t last_extruder_previous_layer; //!< The last id of the extruder with which was printed in the previous layer
     ExtruderTrain* last_planned_extruder; //!< The extruder for which a move has most recently been planned.
